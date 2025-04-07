@@ -1,8 +1,8 @@
 import json
 import networkx as nx
 from collections import defaultdict
-import matplotlib.pyplot as plt
 from PyQt5 import QtWidgets
+from matplotlib.patches import FancyArrowPatch
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
@@ -81,6 +81,18 @@ def compute_layout(G, parsed_code):
         y_offsets[sprite] += 1
     return pos
 
+def draw_edges_with_arrows(G, pos, ax, shrink=25, arrowstyle="-|>", arrowsize=15, edge_color="gray"):
+    for (u, v, data) in G.edges(data=True):
+        arrow = FancyArrowPatch(
+            posA=pos[u],
+            posB=pos[v],
+            arrowstyle=arrowstyle,
+            mutation_scale=arrowsize,
+            shrinkA=shrink,  # controls gap at the start
+            shrinkB=shrink,  # controls gap at the end
+            color=edge_color,
+        )
+        ax.add_patch(arrow)
 
 def main():
     with open("parsed_code.json") as f:
@@ -102,14 +114,19 @@ def main():
     canvas = FigureCanvas(figure)
     layout.addWidget(canvas)
     ax = figure.add_subplot(111)
+    x_values = [p[0] for p in pos.values()]
+    y_values = [p[1] for p in pos.values()]
+    margin = 0.5  # adjust as needed
+    ax.set_xlim(min(x_values) - margin, max(x_values) + margin)
+    ax.set_ylim(min(y_values) - margin, max(y_values) + margin)
     ax.set_axis_off()
 
     # Draw on the Axes using networkx
     nx.draw_networkx_nodes(G, pos, ax=ax, node_color="skyblue", node_shape="s", node_size=1200) # nodes: boxes
     labels = {node: node for node in G.nodes()} # node labels
     nx.draw_networkx_labels(G, pos, labels, ax=ax, font_size=8)
-    nx.draw_networkx_edges(G, pos, ax=ax, arrowstyle="-|>", arrowsize=15, edge_color="gray") # edges: directed
-    edge_labels = {(u, v): data["message"] for u, v, data in G.edges(data=True)} # edge labels
+    draw_edges_with_arrows(G, pos, ax) # edges: nx.draw_networkx_edges does not draw arrowhead well?
+    edge_labels = {(u, v): data["message"] for u, v, data in G.edges(data=True)}
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax, font_size=8, label_pos=0.5)
 
     canvas.draw()

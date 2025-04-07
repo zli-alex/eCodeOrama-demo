@@ -37,3 +37,9 @@ Rynning the demo will create a GUI window that displays a graph of the parsed co
 - Nodes: Each node represents a script from a sprite. The label is formatted to show the sprite’s name and its event (or received message).
 - Edges: An edge from one node to another indicates that a script broadcasts a message that is received by another script. The edge label shows the message name.
 
+## Next Steps
+I plan to add more features to this demo, with the following priorities:
+1. **Interactive Graph**: Allow users to click on nodes and edges, and edit the code.
+   - The challenges includes: better data structure (e.g. ID's) in case of naming changes, and better GUI layout for easier interaction.
+2. **Code Parsing**: Implement a parser to convert Scratch code into the JSON format.
+3. **Code Complexity**: Test out and tweak the code dynamically to see how the graph changes with more complex code structure.
