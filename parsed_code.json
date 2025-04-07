@@ -1,0 +1,37 @@
+{
+    "sprites": [
+      {
+        "name": "Sprite1",
+        "scripts": [
+          {
+            "event": "whenGreenFlag",
+            "blocks": [
+              {"opcode": "event_whenflagclicked"},
+              {"opcode": "event_broadcast", "message": "m1"}
+            ]
+          },
+          {
+            "event": "whenIReceive",
+            "message": "m2",
+            "blocks": [
+              {"opcode": "event_whenbroadcastreceived", "message": "m2"},
+              {"opcode": "motion_move", "steps": 10}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sprite2",
+        "scripts": [
+          {
+            "event": "whenIReceive",
+            "message": "m1",
+            "blocks": [
+              {"opcode": "event_whenbroadcastreceived", "message": "m1"},
+              {"opcode": "event_broadcast", "message": "m2"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
