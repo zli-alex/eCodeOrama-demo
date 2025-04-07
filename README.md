@@ -33,7 +33,7 @@ As a simple demo project, I skipped the parsing part and used a pre-parsed JSON 
 as a representation of the code.
 
 ### Output
-Rynning the demo will create a GUI window that displays a graph of the parsed code.
+Running the demo will create a GUI window that displays a graph of the parsed code.
 - Nodes: Each node represents a script from a sprite. The label is formatted to show the sprite’s name and its event (or received message).
 - Edges: An edge from one node to another indicates that a script broadcasts a message that is received by another script. The edge label shows the message name.
 
